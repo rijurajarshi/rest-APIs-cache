@@ -70,6 +70,7 @@ func GetAllUniversities(c *gin.Context) {
 
 	if found {
 		logger.Println("Retrieved all universities from the cache successfully")
+		fmt.Println("Retrieved all universities from the cache successfully")
 		c.JSON(200, gin.H{
 			"source": "cache", "data from cache": val,
 		})
@@ -77,6 +78,7 @@ func GetAllUniversities(c *gin.Context) {
 		result := config.DB.Find(&universities)
 		if result.Error != nil {
 			logger.Println("Failed to retrieve universities from the database")
+			fmt.Println("Failed to retrieve universities from the database")
 			c.JSON(500, gin.H{
 				"Error": "Failed to retrieve universities from the database",
 			})
@@ -133,6 +135,7 @@ func AddUniversity(c *gin.Context) {
 	err := c.ShouldBindJSON(&university)
 	if err != nil {
 		logger.Println(err.Error())
+		fmt.Println(err.Error())
 		c.JSON(400, gin.H{
 			"error": "Invalid request payload",
 		})
@@ -140,11 +143,13 @@ func AddUniversity(c *gin.Context) {
 	err = config.DB.Create(&university).Error
 	if err != nil {
 		logger.Println(err.Error())
+		fmt.Println(err.Error())
 		c.JSON(500, gin.H{
 			"error": "Failed to create a university",
 		})
 	}
 	logger.Println("New University created")
+	fmt.Println("New University created")
 	c.JSON(201, gin.H{
 		"message": "University created successfully",
 	})
@@ -174,12 +179,14 @@ func UpdateUniversity(c *gin.Context) {
 	result := config.DB.Model(&university).Updates(&input)
 	if result.Error != nil {
 		logger.Println("Failed to update")
+		fmt.Println("Failed to update")
 		c.JSON(500, gin.H{
 			"Error": "Failed to update",
 		})
 	}
 
 	logger.Printf("Updated university info for rank : %d successfully", rankint)
+	fmt.Printf("Updated university info for rank : %d successfully", rankint)
 	c.JSON(200, gin.H{
 		"data": university,
 	})
@@ -200,12 +207,14 @@ func DeleteUniversity(c *gin.Context) {
 	}
 	result := config.DB.Model(&university).Delete(&university)
 	if result.Error != nil {
-		logger.Println("Failed to update")
+		logger.Println("Failed to delete")
+		fmt.Println("Failed to delete")
 		c.JSON(500, gin.H{
-			"Error": "Failed to update",
+			"Error": "Failed to delete",
 		})
 	}
 	logger.Printf("Deleted university info for rank : %d successfully", rankint)
+	fmt.Printf("Deleted university info for rank : %d successfully", rankint)
 	c.JSON(200, gin.H{
 		"status": "Deleted record successfully",
 	})
