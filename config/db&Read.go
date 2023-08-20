@@ -21,7 +21,7 @@ func ReadFile(path string) {
 }
 
 func PushToDB() {
-	db, err := gorm.Open("mysql", "root:Riju*#060300@tcp(127.0.0.1:3306)/")
+	db, err := gorm.Open("mysql", "root:GIVE_YOUR_DB_PASSWORD@tcp(127.0.0.1:3306)/")
 	if err != nil {
 		panic(err)
 	}
